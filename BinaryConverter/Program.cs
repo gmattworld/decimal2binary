@@ -15,28 +15,34 @@ namespace BinaryConverter
             decimal decVal = 0;
             if (!userInputIsValid(userInput, out decVal, out statusmsg))
             {
+                // Return validation error msg
                 Console.WriteLine(statusmsg);
             }
             else
             {
                 string binVal = string.Empty;
+
                 // Check if it contains decimal
                 if(decVal == Convert.ToInt32(decVal))
                 {
+                    // Covert for number without floating point
                     binVal = ConvertIntToBinary(Convert.ToInt32(decVal));
                 }
                 else
                 {
+                    // Split number with floating point
                     var userInputSplit = userInput.Split('.');
 
                     string intBinVal = string.Empty;
                     string decBinVal = string.Empty;
 
+                    // Convert the whole number part
                     if (!string.IsNullOrEmpty(userInputSplit[0]))
                     {
                         intBinVal = ConvertIntToBinary(Convert.ToInt32(userInputSplit[0]));
                     }
 
+                    // Convert the fraction part
                     if (!string.IsNullOrEmpty(userInputSplit[1]))
                     {
                         decBinVal = ConverFractionToBinary(userInputSplit[1]);
@@ -61,12 +67,15 @@ namespace BinaryConverter
         {
             bool isvalid = true;
             errormsg = string.Empty;
+
+            // Check if user input can be converted to decimal
             if(!Decimal.TryParse(userInput, out DecVal))
             {
                 errormsg = $"{userInput} is invalid! A decimal value is expected.";
                 isvalid = false;
             }
 
+            // Check if the number is greater than 0
             if (DecVal < 0)
             {
                 errormsg = $"{userInput} is invalid! Value greater than Zero (0) is expected.";
@@ -77,13 +86,12 @@ namespace BinaryConverter
         }
 
         /// <summary>
-        /// 
+        /// Convert the fraction part of userinput
         /// </summary>
         /// <param name="decVal"></param>
         /// <returns></returns>
         private static string ConverFractionToBinary(string decVal)
         {
-            //0.23 = ((2 * 10^-1) + (3 * 10^-2))
             decimal decValConv = Convert.ToDecimal($"0.{decVal}");
             string retVal = string.Empty;
             int counter = 0;
@@ -107,7 +115,7 @@ namespace BinaryConverter
         }
 
         /// <summary>
-        /// Converts the integer part to binary
+        /// Converts the whole part to binary
         /// </summary>
         /// <param name="decVal"></param>
         /// <returns></returns>
